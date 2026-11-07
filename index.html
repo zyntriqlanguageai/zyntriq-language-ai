@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZYNTRIQ LANGUAGE AI</title>
+<style>
+body{margin:0;font-family:Arial;background:#07152b;color:white;text-align:center;padding:20px}
+h1{color:#00e5ff;margin-top:35px}
+.box{max-width:500px;margin:25px auto;background:#102746;padding:20px;border-radius:16px}
+select,textarea,button{width:100%;padding:13px;margin:10px 0;border-radius:9px;border:0;font-size:16px;box-sizing:border-box}
+textarea{height:120px}
+button{background:#00cce8;color:#06152b;font-weight:bold}
+#result{background:#fff;color:#111;padding:15px;min-height:45px;border-radius:8px;overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<h1>ZYNTRIQ LANGUAGE AI</h1>
+<p>Break Language Barriers 🌍</p>
+<div class="box">
+<h3>Translate Your Language</h3>
+<select id="from">
+<option value="hi">Hindi</option>
+<option value="en">English</option>
+<option value="es">Spanish</option>
+<option value="fr">French</option>
+</select>
+<select id="to">
+<option value="en">English</option>
+<option value="hi">Hindi</option>
+<option value="es">Spanish</option>
+<option value="fr">French</option>
+</select>
+<textarea id="input" placeholder="Type your text here..."></textarea>
+<button onclick="translateText()">Translate Now</button>
+<h3>Translation</h3>
+<div id="result">Your translation will appear here.</div>
+</div>
+<script>
+async function translateText(){
+const q=document.getElementById('input').value.trim();
+const from=document.getElementById('from').value;
+const to=document.getElementById('to').value;
+const result=document.getElementById('result');
+if(!q){result.innerText='Please enter some text.';return;}
+if(from===to){result.innerText=q;return;}
+result.innerText='Translating...';
+try{
+const url='https://api.mymemory.translated.net/get?q='+encodeURIComponent(q)+'&langpair='+from+'|'+to;
+const response=await fetch(url);
+const data=await response.json();
+if(data.responseStatus===200){result.innerText=data.responseData.translatedText;}
+else{result.innerText='Translation unavailable. Please try again.';}
+}catch(e){result.innerText='Internet or translation service error. Try again later.';}
+}
+</script>
+</body>
+</html>
